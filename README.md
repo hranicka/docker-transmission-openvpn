@@ -1,3 +1,38 @@
+> This is fork of [haugene/docker-transmission-openvpn](https://github.com/haugene/docker-transmission-openvpn)
+>
+> ATM adds just build, config and run readme.
+
+---
+
+# Build Docker image - Raspberry Pi
+```
+git clone https://github.com/hranicka/docker-transmission-openvpn.git
+cd docker-transmission-openvpn
+docker image build . -f Dockerfile.armhf -t hranicka/transmission-openvpn
+```
+
+# Installation
+```
+docker run -d \
+    --name transmission \
+    --restart=always \
+    --cap-add=NET_ADMIN \
+    --device=/dev/net/tun \
+    --dns 8.8.4.4 \
+    -v ~/Downloads/transmission:/data \
+    -v /etc/localtime:/etc/localtime:ro \
+    -e "OPENVPN_PROVIDER=nordvpn" \
+    -e "OPENVPN_CONFIG=nl58.nordvpn.com.tcp443" \
+    -e "OPENVPN_USERNAME=hranicka@outlook.com" \
+    -e "OPENVPN_PASSWORD=IlY*HTBq&FDVIm\"=dhk_v2n" \
+    -e "LOCAL_NETWORK=192.168.0.0/24" \
+    -e "TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=true" \
+    -e "TRANSMISSION_RPC_USERNAME=admin" \
+    -e "TRANSMISSION_RPC_PASSWORD=F@d2*7Ijhk8jpR" \
+    -p 9091:9091 \
+    hranicka/transmission-openvpn
+```
+
 # Transmission with WebUI and OpenVPN
 Docker container which runs Transmission torrent client with WebUI while connecting to OpenVPN.
 It bundles certificates and configurations for the following VPN providers:
